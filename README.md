@@ -6,7 +6,7 @@ The files in this repository are intended to allow replication of methodology an
 Inquisit files were used to run tasks (resting state and 3-back).
 
 MATLAB scripts are provided for the analysis pipeline used.
-The sn_analysispipeline script should be used to understand how all other scripts are employed
+The sn_analysispipeline script should be opened first to understand how all other scripts are employed
 
 SPSS syntax is provided for the mixed effects repeated measures model statistical analysis.
 sn_FINAL contains the final syntax used, whereas the other 3 files demonstrate how various analysis parameters were selected
