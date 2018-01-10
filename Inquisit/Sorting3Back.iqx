@@ -1,0 +1,235 @@
+﻿3-Back Actual Task
+
+<data >
+/ columns = [subject, blockcode, trialcode, trialnum, latency, response, stimulusitem, values.attempts,
+ values.cueselecter, values.targets, values.cue1back, values.cue2back, values.cue3back, values.cue4back, values.hits, values.misses, values.falsealarms,
+values.hitsprop, values.missessprop, values.fasprop] 
+</data>
+
+<values>
+/ cueselecter = 0
+/ targets = 0
+/ cue1back = 0
+/ cue2back = 0
+/ cue3back = 0
+/ cue4back = 0
+/ hits = 0
+/ misses = 0
+/ falsealarms = 0
+/ attempts = 0
+/ blocks = 0
+/ hitsprop = 0
+/ missessprop = 0
+/ fasprop = 0
+</values>
+
+<monkey >
+/ percentcorrect = 50
+/ latencydistribution = normal(500, 100)
+</monkey>
+**************************************************************************************************************************************************************************
+
+<expt nbackpractice>
+/ preinstructions =(page1, page2)
+/ blocks = [1=blank;2-41=noreplace(threecue,fourcue,fivecue,sixcue,threecue,fourcue,fivecue,sixcue); 42=thankyou]
+/ onexptbegin = [values.attempts = values.attempts + 1]
+/ onblockend =  [values.hitsprop = values.hits/40*100]
+/ onblockend =  [values.missessprop = values.misses/40*100]
+/ onblockend =  [values.fasprop = values.falsealarms/(40*(18/4))*100]
+</expt>
+
+
+<page page1>
+^In this task you will see letters on the screen.
+^^You need to remember the letter that was on the screen three letters ago.
+^^If the letter on the screen now is the same as the letter that was on the screen three letters ago you need to press the SPACEBAR.
+</page>
+
+<page page2>
+^e.g. the following letter sequence occurs:
+^A, P, J, E, P, F, H, I, L, B, I, M, C, D, M
+^^It would be correct to press the SPACEBAR at the points marked with asterixis.
+^A, P, J, E, P*, F, H, I, L, B, I*,M, C, D, M*
+^^There is no break after you press the SPACEBAR. 
+^When you press continue the task will begin.
+</page>
+
+*****************************************************************
+<block blank>
+/ trials =[1=blank]
+</block>
+
+<block threecue>
+/ trials =[1-3=cue; 4=targets]
+</block>
+
+<block fourcue>
+/ trials =[1-4=cue; 5=targets]
+</block>
+
+<block fivecue>
+/ trials =[1-5=cue; 6=targets]
+</block>
+
+<block sixcue>
+/ trials =[1-6=cue; 7=targets]
+</block>
+
+<block thankyou>
+/ trials = [1=thankyou]
+</block>
+
+*****************************
+
+<port targetsignal>
+/ port = LPT1
+/ subport = data
+/ items = ("00000001")
+/ erase = true("00000000")
+</port>
+
+<port cuesignal>
+/ port = LPT1
+/ subport = data
+/ items = ("00000010")
+/ erase = true("00000000")
+</port>
+
+<port responsesignal>
+/ port = LPT1
+/ subport = data
+/ items = ("00000011")
+/ erase = true("00000000")
+</port>
+*****************************
+
+<trial thankyou>
+/ pretrialpause = 250
+/ posttrialpause = 250
+/ stimulustimes = [1=thankyou]
+/ inputdevice = mouse
+/ validresponse = (lbuttondown)
+/ responsetime = 2000
+/ recorddata = false
+</trial>
+
+<text thankyou>
+/ items = thankyou
+/ hjustify = center
+/ vjustify = center
+/ fontstyle = ("Arial", 2.5%, true)
+/ size = (90%, 80%)
+/ position = (50%, 50%)
+/ select = sequence
+/ resetinterval = 0
+</text>
+
+<item thankyou>
+/ 1 = "3-back Hits = <%values.hitsprop%>%~r~r
+3-back FAs = <%values.fasprop%>% ~r~r~r
+Thank you, please wait for your experimenter."
+</item>
+
+
+<trial cue>
+/ ontrialbegin = [values.targets=counter.targets.selectedvalue; values.cueselecter=counter.cueselecter.selectedvalue]
+/ ontrialend = [values.cue4back=values.cue3back; values.cue3back=values.cue2back; values.cue2back=values.cue1back; values.cue1back=values.cueselecter]
+/ ontrialend = [if (trial.cue.error) {values.falsealarms = values.falsealarms + 1}]
+/ stimulustimes = [0=cue, cuesignal; 30=blankscreen]
+/ validresponse = (" ")
+/ correctresponse = (noresponse)
+/ responsemessage = (" ", responsesignal, 100)
+/ responseinterrupt = trial 
+/ trialduration = 2000
+/ responsetime = 30
+/ recorddata = true
+</trial>
+
+<trial targets>
+/ ontrialbegin = [values.targets=counter.targets.selectedvalue; values.cueselecter=counter.cueselecter.selectedvalue]
+/ ontrialend = [values.cue4back=values.cue3back; values.cue3back=values.cue2back; values.cue2back=values.cue1back; values.cue1back=values.targets]
+/ ontrialend = [if (trial.targets.correct) {values.hits = values.hits + 1}]
+/ ontrialend = [if (trial.targets.error) {values.misses = values.misses + 1}]
+/ ontrialend = [values.blocks = values.blocks + 1]
+/ stimulustimes = [0=targets, targetsignal; 30=blankscreen]
+/ correctresponse = (" ")
+/ responsemessage = (" ", responsesignal, 100)
+/ validresponse = (noresponse)
+/ responseinterrupt = trial 
+/ trialduration = 2000
+/ responsetime = 30
+/ recorddata = true
+</trial>
+
+<trial blank>
+/ stimulustimes = [0=blankscreen]
+/ ontrialbegin = [values.cue3back = 0; values.cue2back=0; values.cue1back=0; values.cueselecter=0;values.targets=0; values.falsealarms=0;values.hits=0;values.misses=0]
+/ validresponse = (noresponse)
+/ trialduration = 1970
+/ recorddata = false
+</trial>
+
+**************************************************************************************************************************************************************************
+<text cue>
+/ items = cues
+/ select = values.cueselecter
+/ fontstyle = ("Arial", 10%, true)
+/ position = (50%,50%)
+/ erase = false
+</text>
+
+<item cues>
+/ 1 = "A"
+/ 2 = "B"
+/ 3 = "C"
+/ 4 = "D"
+/ 5 = "E"
+/ 6 = "F"
+/ 7 = "G"
+/ 8 = "H"
+/ 9 = "I"
+/ 10 = "J"
+</item>
+
+<counter cueselecter>
+/ items = (1,2,3,4,5,6,7,8,9,10)
+/ select = noreplace
+/ not = (targets)
+/ selectionrate = trial
+</counter>
+
+
+<text targets>
+/ items = targets
+/ select = values.targets
+/ fontstyle = ("Arial", 10%, true)
+/ position = (50%,50%)
+/ erase = false
+</text>
+
+<item targets>
+/ 1 = "A"
+/ 2 = "B"
+/ 3 = "C"
+/ 4 = "D"
+/ 5 = "E"
+/ 6 = "F"
+/ 7 = "G"
+/ 8 = "H"
+/ 9 = "I"
+/ 10 = "J"
+</item>
+
+<counter targets>
+/ items = (1,2,3,4,5,6,7,8,9,10)
+/ select = values.cue3back
+/ selectionrate = trial
+</counter>
+
+
+<text blankscreen>
+/ items = ("        ")
+/ size = (50%,50%)
+/ position = (50%,50%)
+/ erase = false
+</text>

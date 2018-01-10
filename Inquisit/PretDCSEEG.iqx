@@ -1,0 +1,56 @@
+﻿Pre-tDCS Resting State EEG
+
+<expt>
+/ preinstructions = (page1)
+/ postinstructions = (page2)
+/ blocks = [1=blank]
+</expt>
+
+*****************************************************************
+
+<page page1>
+^When you press 'ENTER' the EEG recording will begin
+^^Keep your eyes fixated on the cross in the centre of the screen
+^^It is important that you remain as still as possible.
+</page>
+
+<page page2>
+^This completes the EEG recording
+^^Your experimenter will now prepare the tDCS
+</page>
+
+*****************************************************************
+
+<block blank>
+/ trials =[1=blank]
+</block>
+
+<trial blank>
+/ stimulustimes = [0=crossscreen, startsignal; 299995=crossscreen, endsignal]
+/ validresponse = (noresponse)
+/ trialduration = 300000
+/ recorddata = false
+</trial>
+
+<text crossscreen>
+/ items = ("  +  ")
+/ fontstyle = ("Arial", 20%, true)
+/ position = (50%,50%)
+/ erase = false
+</text>
+
+*****************************************************************
+
+<port startsignal>
+/ port = LPT1
+/ subport = data
+/ items = ("00000001")
+/ erase = true("00000000")
+</port>
+
+<port endsignal>
+/ port = LPT1
+/ subport = data
+/ items = ("00000010")
+/ erase = true("00000000")
+</port>

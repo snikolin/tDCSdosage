@@ -1,0 +1,11 @@
+﻿Study 2 - EEG and tDCS Experiment Script
+
+<batch>
+/ file = "Practice3Back.iqx"
+/ file = "PretDCSEEG.iqx"
+/ file = "Sorting3Back.iqx"
+/ file = "DuringtDCSEEG.iqx"
+/ file = "3BackEEGTask.iqx"
+/ file = "PosttDCSEEG.iqx"
+/ file = "Post3BackEEGTask.iqx"
+</batch>
