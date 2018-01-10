@@ -11,3 +11,7 @@ The sn_analysispipeline script should be opened first to understand how all othe
 SPSS syntax is provided for the mixed effects repeated measures model statistical analysis.
 sn_FINAL contains the final syntax used, whereas the other 3 files demonstrate how various analysis parameters were selected
 For example, selection of covariance type, or the factorial combination of independent variables used.
+
+Please consider citing this resource using the following:
+
+DOI: 10.5281/zenodo.1143799
